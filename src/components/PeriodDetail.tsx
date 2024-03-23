@@ -2,6 +2,7 @@ import React from 'react';
 import { Table } from 'antd';
 import type { TableColumnsType } from 'antd';
 import { dashboardSampleV0_4MealDetailData } from '../Json/dashboardSampleV0_4MealDetailData';
+import '../styles/periodDetail.css'
 interface DataType {
   key: React.Key;
   date: string;
@@ -19,13 +20,13 @@ interface DataType {
 }
 interface DataType2 {
   key: React.Key;
-  room: any;
+  room: string;
   "Guest Names": string;
   Count: number;
   Pax: any;
   Time: any;
   "Pkg. Code": string;
-  description: React.ReactNode; // Thêm trường description vào DataType
+  Remark: string;
 }
 const dataTS = dashboardSampleV0_4MealDetailData[0]
 
@@ -43,6 +44,12 @@ const formattedSalesFT = formatSales(dataTS.outlet[0].total.total_actual.sales);
 const formattedSalesBAS = formatSales(dataTS.outlet[0].breakfast.total.adults_actual.sales);
 const formattedSalesBCS = formatSales(dataTS.outlet[0].breakfast.total.children_actual.sales);
 const formattedSalesBS = formatSales(dataTS.outlet[0].breakfast.total.total_actual.sales);
+const formattedSalesLAS = formatSales(dataTS.outlet[0].lunch.total.adults_actual.sales);
+const formattedSalesLCS = formatSales(dataTS.outlet[0].lunch.total.children_actual.sales);
+const formattedSalesLS = formatSales(dataTS.outlet[0].lunch.total.total_actual.sales);
+const formattedSalesDAS = formatSales(dataTS.outlet[0].dinner.total.adults_actual.sales);
+const formattedSalesDCS = formatSales(dataTS.outlet[0].dinner.total.children_actual.sales);
+const formattedSalesDS = formatSales(dataTS.outlet[0].dinner.total.total_actual.sales);
 
 const formatPercentage = (percentage: number): string => {
   return (percentage / 100).toLocaleString(undefined, { style: 'percent' });
@@ -54,6 +61,10 @@ const formattedPercentageFC = formatPercentage(dataTS.outlet[0].total.total_actu
 const formattedPercentageFS = formatPercentage(dataTS.outlet[0].total.total_actual.percentage_sales);
 const formattedPercentageBCP = formatPercentage(dataTS.outlet[0].breakfast.total.total_actual.percentage_count);
 const formattedPercentageBSP = formatPercentage(dataTS.outlet[0].breakfast.total.total_actual.percentage_sales);
+const formattedPercentageLCP = formatPercentage(dataTS.outlet[0].lunch.total.total_actual.percentage_count);
+const formattedPercentageLSP = formatPercentage(dataTS.outlet[0].lunch.total.total_actual.percentage_sales);
+const formattedPercentageDCP = formatPercentage(dataTS.outlet[0].dinner.total.total_actual.percentage_count);
+const formattedPercentageDSP = formatPercentage(dataTS.outlet[0].dinner.total.total_actual.percentage_sales);
 
 const columnsWidth = 100;
 const columns: TableColumnsType<DataType> = [
@@ -78,18 +89,124 @@ const columns2: TableColumnsType<DataType2> = [
   { title: 'Pkg. Code', dataIndex: 'Pkg. Code', key: 'Pkg. Code', width: columnsWidth, align: 'right' },
   { title: 'Remark', dataIndex: 'Remark', key: 'Remark', width: columnsWidth, align: 'right' },
 ];
-// const dataBreakfast: DataType2[] = [
-//   {
-//     key: 4,
-//     room: 12,
-//     "Guest Names": 'Vinh',
-//     Count: 12,
-//     Pax: '',
-//     Time: '',
-//     "Pkg. Code": 'AB',
-//     description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-//   },
-// ];
+const recordTimes = Object.keys(dataTS.outlet[0].breakfast.records);
+recordTimes.forEach(time => {
+    console.log('Thời gian:', time);
+});
+const dataBreakfast: DataType2[] = [
+  {
+    key: 11,
+    room: dataTS.outlet[0].breakfast.records['15:41:19'].room,
+    "Guest Names": dataTS.outlet[0].breakfast.records['15:41:19'].guest_names,
+    Count: dataTS.outlet[0].breakfast.records['15:41:19'].count,
+    Pax: dataTS.outlet[0].breakfast.records['15:41:19'].pax,
+    Time: '15:41:19',
+    "Pkg. Code": dataTS.outlet[0].breakfast.records['15:41:19'].package_code,
+    Remark: dataTS.outlet[0].breakfast.records['15:41:19'].remark,
+  },
+  {
+    key: 12,
+    room: dataTS.outlet[0].breakfast.records['15:41:20'].room,
+    "Guest Names": dataTS.outlet[0].breakfast.records['15:41:20'].guest_names,
+    Count: dataTS.outlet[0].breakfast.records['15:41:20'].count,
+    Pax: dataTS.outlet[0].breakfast.records['15:41:20'].pax,  
+    Time: '15:41:20',
+    "Pkg. Code": dataTS.outlet[0].breakfast.records['15:41:20'].package_code,
+    Remark: dataTS.outlet[0].breakfast.records['15:41:20'].remark,
+  },
+];
+const dataLunch: DataType2[] = [
+  {
+    key: 13,
+    room: dataTS.outlet[0].lunch.records['16:41:19'].room,
+    "Guest Names": dataTS.outlet[0].lunch.records['16:41:19'].guest_names,
+    Count: dataTS.outlet[0].lunch.records['16:41:19'].count,
+    Pax: dataTS.outlet[0].lunch.records['16:41:19'].pax,
+    Time: '16:41:19',
+    "Pkg. Code": dataTS.outlet[0].lunch.records['16:41:19'].package_code,
+    Remark: dataTS.outlet[0].lunch.records['16:41:19'].remark,
+  },
+  {
+    key: 14,
+    room: dataTS.outlet[0].lunch.records['16:41:20'].room,
+    "Guest Names": dataTS.outlet[0].lunch.records['16:41:20'].guest_names,
+    Count: dataTS.outlet[0].lunch.records['16:41:20'].count,
+    Pax: dataTS.outlet[0].lunch.records['16:41:20'].pax,  
+    Time: '16:41:20',
+    "Pkg. Code": dataTS.outlet[0].lunch.records['16:41:20'].package_code,
+    Remark: dataTS.outlet[0].lunch.records['16:41:20'].remark,
+  },
+];
+const dataDinner: DataType2[] = [
+  {
+    key: 13,
+    room: dataTS.outlet[0].dinner.records['12:41:19'].room,
+    "Guest Names": dataTS.outlet[0].dinner.records['12:41:19'].guest_names,
+    Count: dataTS.outlet[0].dinner.records['12:41:19'].count,
+    Pax: dataTS.outlet[0].dinner.records['12:41:19'].pax,
+    Time: '12:41:19',
+    "Pkg. Code": dataTS.outlet[0].dinner.records['12:41:19'].package_code,
+    Remark: dataTS.outlet[0].dinner.records['12:41:19'].remark,
+  },
+  {
+    key: 14,
+    room: dataTS.outlet[0].dinner.records['12:41:20'].room,
+    "Guest Names": dataTS.outlet[0].dinner.records['12:41:20'].guest_names,
+    Count: dataTS.outlet[0].dinner.records['12:41:20'].count,
+    Pax: dataTS.outlet[0].dinner.records['12:41:20'].pax,  
+    Time: '12:41:20',
+    "Pkg. Code": dataTS.outlet[0].dinner.records['12:41:20'].package_code,
+    Remark: dataTS.outlet[0].dinner.records['12:41:20'].remark,
+  },
+];
+const data5: DataType[] = [
+  {
+    key: 5,
+    date: '',
+    RVC: '',
+    Period: 'Dinner',
+    "A. Count": dataTS.outlet[0].dinner.total.adults_actual.count,
+    "C. Count": dataTS.outlet[0].dinner.total.children_actual.count,
+    "A. Sales": formattedSalesDAS,
+    "C. Sales": formattedSalesDCS,
+    Count: dataTS.outlet[0].dinner.total.total_actual.count,
+    "Count %": formattedPercentageDCP,
+    Sales: formattedSalesDS,
+    "Sale %": formattedPercentageDSP,
+    description: (
+      <Table
+        columns={columns2}
+        dataSource={dataDinner}
+        pagination={false}
+      />
+
+    ),
+  },
+];
+const data4: DataType[] = [
+  {
+    key: 4,
+    date: '',
+    RVC: '',
+    Period: 'Lunch',
+    "A. Count": dataTS.outlet[0].lunch.total.adults_actual.count,
+    "C. Count": dataTS.outlet[0].lunch.total.children_actual.count,
+    "A. Sales": formattedSalesLAS,
+    "C. Sales": formattedSalesLCS,
+    Count: dataTS.outlet[0].lunch.total.total_actual.count,
+    "Count %": formattedPercentageLCP,
+    Sales: formattedSalesLS,
+    "Sale %": formattedPercentageLSP,
+    description: (
+      <Table
+        columns={columns2}
+        dataSource={dataLunch}
+        pagination={false}
+      />
+
+    ),
+  },
+];
 const data3: DataType[] = [
   {
     key: 3,
@@ -104,7 +221,14 @@ const data3: DataType[] = [
     "Count %": formattedPercentageBCP,
     Sales: formattedSalesBS,
     "Sale %": formattedPercentageBSP,
-    description: 'ádasda',
+    description: (
+      <Table
+        columns={columns2}
+        dataSource={dataBreakfast}
+        pagination={false}
+      />
+
+    ),
   },
 ];
 const data2: DataType[] = [
@@ -122,18 +246,47 @@ const data2: DataType[] = [
     Sales: formattedSalesFT,
     "Sale %": formattedPercentageFS,
     description: (
-      <Table
-        columns={columns}
-        expandable={{
-          expandedRowRender: (record) => record.description,
-          rowExpandable: (record) => record.date !== 'Not Expandable',
-        }}
-        dataSource={data3}
-        showHeader={false}
-        pagination={false}
-        scroll={{ x: columnsWidth * columns.length }}
-      />
-
+      <>
+        <div className="table-wrapper">
+          <Table
+            columns={columns}
+            expandable={{
+              expandedRowRender: (record) => record.description,
+              rowExpandable: (record) => record.date !== 'Not Expandable',
+            }}
+            dataSource={data3}
+            showHeader={false}
+            pagination={false}
+            scroll={{ x: columnsWidth * columns.length }}
+          />
+        </div>
+        <div className="table-wrapper">
+          <Table
+            columns={columns}
+            expandable={{
+              expandedRowRender: (record) => record.description,
+              rowExpandable: (record) => record.date !== 'Not Expandable',
+            }}
+            dataSource={data4}
+            showHeader={false}
+            pagination={false}
+            scroll={{ x: columnsWidth * columns.length }}
+          />
+        </div>
+        <div className="table-wrapper">
+          <Table
+            columns={columns}
+            expandable={{
+              expandedRowRender: (record) => record.description,
+              rowExpandable: (record) => record.date !== 'Not Expandable',
+            }}
+            dataSource={data5}
+            showHeader={false}
+            pagination={false}
+            scroll={{ x: columnsWidth * columns.length }}
+          />
+        </div>
+      </>
     ),
   },
 ];
