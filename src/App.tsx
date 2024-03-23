@@ -38,7 +38,9 @@ const App: React.FC = () => {
     <Sider trigger={null} collapsible collapsed={collapsed}>
       {/* <div className="demo-logo-vertical" /> */}
       <div className='text-center mt-2'>
-        <h1 className='text-white font-extrabold text-2xl'>DEMO HOTEL</h1>
+        <h1 style={{
+          color: '#82CA9D'
+        }} className='font-extrabold text-2xl'>DEMO HOTEL</h1>
       </div>
       <Menu
         theme="dark"
@@ -58,7 +60,7 @@ const App: React.FC = () => {
       </Menu>
     </Sider>
     <Layout>
-      <Header style={{ padding: 0, background: '#001529', color: '#fff' }}>
+      <Header style={{ padding: 0, background: '#FFFFFF', color: '#fff',boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', }}>
         <Button
           type="text"
           icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -67,11 +69,11 @@ const App: React.FC = () => {
             fontSize: '16px',
             width: 64,
             height: 64,
-            color: '#fff',
+            color: '#82CA9D',
           }}
         />
       </Header>
-      <Content style={{ margin: '24px 16px', padding: 24, minHeight: '100vh' }}>
+      <Content style={{ margin: '24px 16px', padding: '24 30', minHeight: '100vh', background: '#F4F4F5' }}>
         {renderTabContent()}
       </Content>
     </Layout>
