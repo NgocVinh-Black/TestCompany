@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'antd';
+import * as XLSX from 'xlsx';
 import type { TableColumnsType } from 'antd';
 import { dashboardSampleV0_4MealDetailData } from '../Json/dashboardSampleV0_4MealDetailData';
 import '../styles/periodDetail.css'
@@ -91,7 +92,7 @@ const columns2: TableColumnsType<DataType2> = [
 ];
 const recordTimes = Object.keys(dataTS.outlet[0].breakfast.records);
 recordTimes.forEach(time => {
-    console.log('Thời gian:', time);
+  console.log('Thời gian:', time);
 });
 const dataBreakfast: DataType2[] = [
   {
@@ -109,7 +110,7 @@ const dataBreakfast: DataType2[] = [
     room: dataTS.outlet[0].breakfast.records['15:41:20'].room,
     "Guest Names": dataTS.outlet[0].breakfast.records['15:41:20'].guest_names,
     Count: dataTS.outlet[0].breakfast.records['15:41:20'].count,
-    Pax: dataTS.outlet[0].breakfast.records['15:41:20'].pax,  
+    Pax: dataTS.outlet[0].breakfast.records['15:41:20'].pax,
     Time: '15:41:20',
     "Pkg. Code": dataTS.outlet[0].breakfast.records['15:41:20'].package_code,
     Remark: dataTS.outlet[0].breakfast.records['15:41:20'].remark,
@@ -131,7 +132,7 @@ const dataLunch: DataType2[] = [
     room: dataTS.outlet[0].lunch.records['16:41:20'].room,
     "Guest Names": dataTS.outlet[0].lunch.records['16:41:20'].guest_names,
     Count: dataTS.outlet[0].lunch.records['16:41:20'].count,
-    Pax: dataTS.outlet[0].lunch.records['16:41:20'].pax,  
+    Pax: dataTS.outlet[0].lunch.records['16:41:20'].pax,
     Time: '16:41:20',
     "Pkg. Code": dataTS.outlet[0].lunch.records['16:41:20'].package_code,
     Remark: dataTS.outlet[0].lunch.records['16:41:20'].remark,
@@ -153,7 +154,7 @@ const dataDinner: DataType2[] = [
     room: dataTS.outlet[0].dinner.records['12:41:20'].room,
     "Guest Names": dataTS.outlet[0].dinner.records['12:41:20'].guest_names,
     Count: dataTS.outlet[0].dinner.records['12:41:20'].count,
-    Pax: dataTS.outlet[0].dinner.records['12:41:20'].pax,  
+    Pax: dataTS.outlet[0].dinner.records['12:41:20'].pax,
     Time: '12:41:20',
     "Pkg. Code": dataTS.outlet[0].dinner.records['12:41:20'].package_code,
     Remark: dataTS.outlet[0].dinner.records['12:41:20'].remark,
@@ -319,17 +320,72 @@ const data: DataType[] = [
     ),
   },
 ];
+const exportTableToExcel = (tables: HTMLElement[], filenames: string[]) => {
+  const wb = XLSX.utils.book_new();
+
+  tables.forEach((table, index) => {
+    const ws = XLSX.utils.table_to_sheet(table);
+    XLSX.utils.book_append_sheet(wb, ws, filenames[index]);
+  });
+
+  XLSX.writeFile(wb, 'filename.xlsx');
+};
+
+const handleExportToExcel = () => {
+  const tableTotal = document.getElementById('tableTotal');
+  const tableBreakfast = document.getElementById('tableBreakfast');
+  const tableLunch = document.getElementById('tableLunch');
+  const tableDinner = document.getElementById('tableDinner');
+
+  const tables: HTMLElement[] = [];
+
+  if (tableTotal) {
+    tables.push(tableTotal);
+    const nestedTables = tableTotal.querySelectorAll('table');
+    nestedTables.forEach((table) => tables.push(table as HTMLElement));
+  }
+
+  if (tableBreakfast) {
+    tables.push(tableBreakfast);
+    const nestedTables = tableBreakfast.querySelectorAll('table');
+    nestedTables.forEach((table) => tables.push(table as HTMLElement));
+  }
+
+  if (tableLunch) {
+    tables.push(tableLunch);
+    const nestedTables = tableLunch.querySelectorAll('table');
+    nestedTables.forEach((table) => tables.push(table as HTMLElement));
+  }
+
+  if (tableDinner) {
+    tables.push(tableDinner);
+    const nestedTables = tableDinner.querySelectorAll('table');
+    nestedTables.forEach((table) => tables.push(table as HTMLElement));
+  }
+
+  const filenames = ['Total', 'Breakfast', 'Lunch', 'Dinner'];
+
+  exportTableToExcel(tables, filenames);
+};
+
+const exportButton = (
+  <button onClick={handleExportToExcel}>Export to Excel</button>
+);
 
 const App: React.FC = () => (
-  <Table
-    columns={columns}
-    expandable={{
-      expandedRowRender: (record) => record.description,
-      rowExpandable: (record) => record.date !== 'Not Expandable',
-    }}
-    dataSource={data}
-    scroll={{ x: columnsWidth * columns.length }}
-  />
+  <>
+    {exportButton}
+    <Table
+      id="tableTotal"
+      columns={columns}
+      expandable={{
+        expandedRowRender: (record) => record.description,
+        rowExpandable: (record) => record.date !== 'Not Expandable',
+      }}
+      dataSource={data}
+      scroll={{ x: columnsWidth * columns.length }}
+    /></>
+
 );
 
 export default App;
