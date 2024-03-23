@@ -1,3 +1,13 @@
 .table-wrapper {
-    margin-bottom: 20px; /* Thêm khoảng cách dưới mỗi bảng con */
-  }
+  margin-bottom: 20px;
+  /* Thêm khoảng cách dưới mỗi bảng con */
+}
+
+.taiEx {
+  color: rgb(11, 159, 11);
+}
+
+.taiEx:hover {
+  background-color: green;
+  color: black;
+}

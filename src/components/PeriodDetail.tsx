@@ -369,11 +369,20 @@ const handleExportToExcel = () => {
 };
 
 const exportButton = (
-  <button onClick={handleExportToExcel}>Export to Excel</button>
+  <button style={{
+    border: '1px green solid',
+    borderRadius: 5,
+
+  }} className='px-2 py-1 taiEx' onClick={handleExportToExcel}>Export to Excel</button>
 );
 
 const App: React.FC = () => (
-  <>
+  <div style={{
+    background: '#FFFFFF',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+  }} className='px-4 py-4'>
+    <h2 className="text-2xl font-bold mb-4">Period Detail</h2>
+    <p className='mb-3'>Please design a nested table with this data with a button to download the excel file (no need for calendar)</p>
     {exportButton}
     <Table
       id="tableTotal"
@@ -384,7 +393,7 @@ const App: React.FC = () => (
       }}
       dataSource={data}
       scroll={{ x: columnsWidth * columns.length }}
-    /></>
+    /></div>
 
 );
 
